@@ -1,0 +1,6 @@
+name: foreman_ansible_modules
+root: ~/foreman-ansible-modules
+
+windows:
+  - zsh: g s
+  - vim: vim

@@ -1,0 +1,6 @@
+name: katello-installer
+root: ~/dev/katello-installer
+
+windows:
+  - zsh: git remote -v
+  - vim: vim

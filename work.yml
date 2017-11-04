@@ -1,0 +1,9 @@
+# ~/.tmuxinator/work.yml
+
+name: work
+root: ~/
+
+windows:
+  - editor:
+  - server: bundle exec rails s
+  - logs: tail -f log/development.log

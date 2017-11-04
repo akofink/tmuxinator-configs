@@ -1,0 +1,9 @@
+name: dns
+root: ~/
+
+windows:
+  - zsh:
+  - vim:
+    - sudo vim /etc/named/zones/db.192.168
+  - vim:
+    - sudo vim /etc/named/zones/db.example.com

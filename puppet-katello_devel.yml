@@ -1,0 +1,6 @@
+name: puppet-katello_devel
+root: ~/dev/puppet-katello_devel
+
+windows:
+  - zsh: g s
+  - vim: vim

@@ -1,0 +1,11 @@
+name: sat-deploy
+root: ~/dev/sat-deploy
+
+windows:
+  - zsh: vagrant status
+  - vim: vim
+  - sat63-qa-rhel7:
+    - vagrant up sat63-qa-rhel7
+    - vagrant ssh sat63-qa-rhel7
+    - sudo su
+    - screen -R akofink

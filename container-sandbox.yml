@@ -1,0 +1,7 @@
+name: container-sandbox
+root: ~/dev/container-sandbox
+
+windows:
+  - zsh: git status
+  - vim: vim
+  - zsh:

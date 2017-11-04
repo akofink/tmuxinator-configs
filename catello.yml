@@ -1,0 +1,16 @@
+name: catello
+root: ~/dev/forklift
+
+pre:
+  - vagrant up centos6
+  - sshfs -o idmap=user vagrant@centos6:/home/vagrant ~/dev/centos6
+windows:
+  - zsh:
+    - cd ~/dev/catello
+    - git status
+  - vim:
+    - cd ~/dev/catello
+    - vim
+  - test:
+    - vagrant ssh centos6
+    - cd catello

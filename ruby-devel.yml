@@ -1,0 +1,7 @@
+name: ruby-devel
+root: ~/
+
+windows:
+  - zsh:
+  - vim: vim
+  - irb: irb

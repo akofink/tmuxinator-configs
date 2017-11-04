@@ -1,0 +1,11 @@
+name: foreman_ansible_modules
+root: ~/dev/mux/foreman-ansible-modules/foreman-ansible-modules
+
+windows:
+  - zsh: g s
+  - vim: vim
+  - pdb:
+    - cd ~/dev/forklift
+    - vagrant ssh centos7-hammer-devel
+    - cd foreman-ansible-modules
+    - make

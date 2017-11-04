@@ -1,0 +1,10 @@
+name: nailgun
+root: ~/dev/nailgun
+
+windows:
+  - zsh: g s
+  - vim: vim
+  - test:
+    - cd ~/dev/forklift
+    - vagrant ssh centos7-hammer-devel
+    - cd nailgun

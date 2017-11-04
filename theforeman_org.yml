@@ -1,0 +1,6 @@
+name: theforeman_org
+root: ~/dev/theforeman.org
+
+windows:
+  - zsh: git status
+  - vim: vim

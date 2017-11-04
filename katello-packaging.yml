@@ -1,0 +1,6 @@
+name: katello-packaging
+root: ~/dev/katello-packaging
+
+windows:
+  - zsh: g remote -v
+  - vim: vim

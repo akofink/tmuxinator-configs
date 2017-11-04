@@ -1,0 +1,17 @@
+name: foreman_maintain
+root: ~/dev/foreman_maintain
+pre:
+  - cp -r ~/dev/foreman_maintain ~/dev/centos7-devel/
+
+windows:
+  - zsh:
+  - vim: vim
+  - irb:
+    - cd ~/dev/forklift
+    - vagrant ssh centos7-devel
+    - cd foreman_maintain
+    - irb
+  - test:
+    - cd ~/dev/forklift
+    - vagrant ssh centos7-devel
+    - cd foreman_maintain

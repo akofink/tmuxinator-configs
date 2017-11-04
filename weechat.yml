@@ -1,0 +1,6 @@
+name: weechat
+root: ~/
+
+windows:
+  - weechat: weechat
+  # - scrum: vim /var/www/html/scrum/20170626

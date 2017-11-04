@@ -1,0 +1,7 @@
+name: prprocessor
+root: ~/dev/prprocessor
+
+windows:
+  - zsh:
+  - vim: vim
+  - irb: irb

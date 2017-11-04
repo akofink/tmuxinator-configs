@@ -1,0 +1,6 @@
+name: tool_belt
+root: ~/dev/tool_belt
+
+windows:
+  - zsh: g s
+  - vim: vim

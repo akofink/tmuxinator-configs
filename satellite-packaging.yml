@@ -1,0 +1,6 @@
+name: satellite-packaging
+root: ~/dev/downstream/satellite-packaging
+
+windows:
+  - zsh: g s
+  - vim: vim
