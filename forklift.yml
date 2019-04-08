@@ -1,5 +1,5 @@
 name: forklift
-root: ~/dev/forklift
+root: ~/dev/repos/forklift
 
 windows:
   - zsh: vagrant status

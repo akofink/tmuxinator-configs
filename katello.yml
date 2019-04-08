@@ -1,12 +1,12 @@
 name: katello
-root: ~/dev/forklift
+root: ~/dev/repos/forklift
 
-pre:
+on_project_start:
   # - vagrant up centos7-devel centos7-proxy-devel dev-host dev-host2
   - vagrant up centos7-devel
   # - sudo systemctl start goferd
   # - sshfs -o idmap=user vagrant@centos7-hammer-devel.example.com:/home/vagrant ~/dev/sshfs/centos7-hammer-devel
-  - sshfs -o idmap=user vagrant@centos7-devel:/home/vagrant ~/dev/sshfs/centos7-devel
+  #- sshfs -o idmap=user vagrant@centos7-devel.virbr0.akofink-laptop:/home/vagrant ~/dev/sshfs/centos7-devel
   # - ~/dev/pull_all.sh
 windows:
   - shell:
@@ -22,17 +22,21 @@ windows:
   - tests:
     - vagrant ssh centos7-devel
     - cd foreman
-    - rake db:test:prepare
-    - ktest
+    - bundle exec rake db:test:prepare
+    - #ktest
   - server:
     - vagrant ssh centos7-devel
     - cd foreman
     - bundle update
+    - rake db:migrate
+    - bundle exec rails s -b 0.0.0.0
+  - webpack:
+    - vagrant ssh centos7-devel
+    - cd foreman
     - sudo yum install -y npm
     - npm install
-    - rake webpack:compile
-    - rake db:migrate
-    - rails s -b 0.0.0.0
+    - BIND=0.0.0.0 ./node_modules/.bin/webpack-dev-server --config config/webpack.config.js --https --disable-host-check --key /etc/pki/katello/private/centos7-devel.virbr0.akofink-laptop-foreman-client.key --cert /etc/pki/katello/certs/centos7-devel.virbr0.akofink-laptop-foreman-client.crt --cacert /etc/pki/katello/certs/katello-default-ca.crt --watch-poll 1000
+
   # - centos7-proxy-devel:
   #   - vagrant status | grep proxy
   # - dev-host:

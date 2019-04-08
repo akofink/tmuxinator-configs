@@ -1,11 +1,22 @@
 name: foreman_ansible_modules
-root: ~/dev/mux/foreman-ansible-modules/foreman-ansible-modules
+root: ~/dev/repos/forklift
+
+on_project_start:
+  - vagrant up centos7-hammer-devel
 
 windows:
-  - zsh: g s
-  - vim: vim
+  - FAM:
+    - cd ~/dev/mux/foreman-ansible-modules/foreman-ansible-modules
+    - g s
+  - vim:
+    - cd ~/dev/mux/foreman-ansible-modules/foreman-ansible-modules
+    - vim
   - pdb:
-    - cd ~/dev/forklift
     - vagrant ssh centos7-hammer-devel
     - cd foreman-ansible-modules
     - make
+  - KAS:
+    - cd ~/dev/mux/foreman-ansible-modules/katello-ansible-seeds
+  - vim:
+    - cd ~/dev/mux/foreman-ansible-modules/katello-ansible-seeds
+    - vim
