@@ -1,6 +1,9 @@
 name: weechat
 root: ~/
 
+on_project_start:
+  - sudo nmcli c show --active | grep Raleigh\ \(RDU2\) || sudo nmcli c up --ask 'Raleigh (RDU2)'
+
 windows:
   - weechat: weechat
   # - scrum: vim /var/www/html/scrum/20170626
