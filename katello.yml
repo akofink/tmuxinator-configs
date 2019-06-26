@@ -5,8 +5,6 @@ on_project_start:
   # - vagrant up centos7-devel centos7-proxy-devel dev-host dev-host2
   - vagrant up centos7-devel
   # - sudo systemctl start goferd
-  # - sshfs -o idmap=user vagrant@centos7-hammer-devel.example.com:/home/vagrant ~/dev/sshfs/centos7-hammer-devel
-  #- sshfs -o idmap=user vagrant@centos7-devel.virbr0.akofink-laptop:/home/vagrant ~/dev/sshfs/centos7-devel
   # - ~/dev/pull_all.sh
 windows:
   - shell:

@@ -3,7 +3,7 @@ root: ~/dev/mux/compliance
 
 on_project_start:
   - sudo systemctl start docker
-  - docker-prune
+  # - docker image prune -f; docker container prune -f; docker volume prune -f # takes a while
 
 on_project_stop:
   - cd ~/dev/mux/compliance/compliance-backend
@@ -14,7 +14,13 @@ on_project_stop:
 
 windows:
   - sh:
-    - #curl -vvvv -H "x-rh-identity: eyJpZGVudGl0eSI6IHsiYWNjb3VudF9udW1iZXIiOiAiMTIxMjcyOSIsICJpbnRlcm5hbCI6IHsib3JnX2lkIjogIjU0MzIxIn19fQo=" -F "upload=@/tmp/rhel-xccdf-report.xml;type=application/vnd.redhat.compliance.something+tgz" -H "x-rh-insights-request-id: foo" localhost:8080/r/insights/platform/upload/api/v1/upload
+      layout: even-vertical
+      panes:
+        - compliance-frontend:
+          - cd compliance-frontend
+        - compliance-backend:
+          - cd compliance-backend
+          - #curl -vvvv -H "x-rh-identity: eyJpZGVudGl0eSI6IHsiYWNjb3VudF9udW1iZXIiOiAiMTIxMjcyOSIsICJpbnRlcm5hbCI6IHsib3JnX2lkIjogIjU0MzIxIn19fQo=" -F "upload=@/tmp/rhel-xccdf-report.xml;type=application/vnd.redhat.compliance.something+tgz" -H "x-rh-insights-request-id: foo" localhost:8080/r/insights/platform/upload/api/v1/upload
   - vim:
     - vim
   - insights-proxy:
@@ -27,6 +33,7 @@ windows:
     # - cd ../insights-chrome/build
     - docker stop insightsproxy
     - docker rm insightsproxy
+    # - SPANDX_CONFIG=../compliance-frontend/config/spandx.config.js MYOPTS="-e LOCAL_CHROME -v $PWD/../insights-chrome/build:/chrome:z" ./scripts/run.sh
     # - SPANDX_CONFIG=$(pwd)/../../insights-proxy/compliance-backend.js LOCAL_CHROME=true ../../insights-proxy/scripts/run.sh
     # - SPANDX_CONFIG=compliance-backend.js ./scripts/run.sh
     - SPANDX_CONFIG=../compliance-frontend/config/spandx.config.js ./scripts/run.sh
@@ -45,44 +52,66 @@ windows:
         #   - npm run start
         - compliance-frontend:
           - cd compliance-frontend
-          - git checkout master -- package-lock.json
+          - git stash
           - git pull --rebase upstream master
+          - git stash pop
           - npm install
-          - npm link ../insights-frontend-components
+          - npm link ../frontend-components
           - npm run start
-        - insights-frontend-components:
-          - cd insights-frontend-components
+        - frontend-components:
+          - cd frontend-components
           - git pull --rebase upstream master
           - npm install
-          - sleep 30
-          - npm run build # this must run after `npm run start` completes on compliance-frontend
+          - npm run build
   - insights-upload:
-    - cd insights-upload
-    - git add topics.json
-    - git stash
-    - git pull --rebase upstream master
-    - git stash pop
-    - cd docker
-    - docker-compose down
-    - docker-compose up -d --build
-    - docker-compose logs -f
+      layout: even-vertical
+      panes:
+        - insights-upload:
+          - cd insights-upload
+          - git add topics.json
+          - git stash
+          - git pull --rebase upstream master
+          - git stash pop
+          - cd docker
+          - docker-compose down
+          - docker-compose up -d --build
+          - docker-compose logs -f
+        - insights-upload:
   - compliance-backend:
-    - cd compliance-backend
-    - docker-compose down
-    - git stash
-    - git pull --rebase upstream master
-    - git stash pop
-    - sleep 10
-    - sudo chown -R akofink:akofink .
-    - docker-compose up -d --build
-    - docker-compose logs -f
+      layout: even-vertical
+      panes:
+        - main:
+          - cd compliance-backend
+          - docker-compose down
+          - git stash
+          - git pull --rebase upstream master
+          - git stash pop
+          - sleep 10
+          - sudo chown -R akofink:akofink .
+          - docker-compose up -d --build
+          - docker-compose logs -f
+        - alt:
+          - cd compliance-backend
+          - #docker-compose stop rails
+          - #docker-compose run -v `pwd`:/app:z -p 3000:3000 rails
   - rhel7-insights-client:
-    - cd ~/dev/vagrant-boxes/rhel7-insights-client
-    - vagrant destroy
-    - vagrant up
-    - vagrant ssh -- -A -R 8080:localhost:8080 -R 1337:ci.foo.redhat.com:1337
-    - sudo pip install -I file:///home/vagrant/insights-core#egg=insights
-    - cd insights-client
-    - sudo sh lay-the-eggs.sh
-    - "#sudo x-rh-identity=eyJpZGVudGl0eSI6eyJhY2NvdW50X251bWJlciI6IjEyMTI3MjkiLCJpbnRlcm5hbCI6eyJvcmdfaWQiOiI1NDMyMSJ9LCJ1c2VyIjp7InVzZXJuYW1lIjoicmhuLWVuZ2luZWVyaW5nLWFrb2ZpbmsifX19 python compliance-client/__init__.py"
-    - "#sudo BYPASS_GPG=true insights-client --no-gpg --payload ~/rhel7-content_profile_common.xml --content-type application/vnd.redhat.compliance.something+tgz"
+      layout: even-vertical
+      panes:
+        - rhel7-insights-client:
+          - cd ~/dev/vagrant-boxes/rhel7-insights-client
+          # - vagrant destroy -f
+          - vagrant up
+          - vagrant ssh -- -A -R 8080:localhost:8080 -R 1337:ci.foo.redhat.com:1337
+          - sudo pip install -I file:///home/vagrant/insights-core#egg=insights
+          - cd insights-client
+          - sudo sh lay-the-eggs.sh
+          - "#sudo x-rh-identity=eyJpZGVudGl0eSI6eyJhY2NvdW50X251bWJlciI6IjEyMTI3MjkiLCJpbnRlcm5hbCI6eyJvcmdfaWQiOiI1NDMyMSJ9LCJ1c2VyIjp7InVzZXJuYW1lIjoicmhuLWVuZ2luZWVyaW5nLWFrb2ZpbmsifX19 python compliance-client/__init__.py"
+          - "#sudo BYPASS_GPG=true insights-client --no-gpg --payload ~/rhel7-content_profile_common.xml --content-type application/vnd.redhat.compliance.something+tgz"
+        - rhel7-insights-client:
+          - cd ~/dev/vagrant-boxes/rhel7-insights-client
+        # - rhel7-insights-client-prod:
+        #   - cd ~/dev/vagrant-boxes/rhel7-insights-client-prod
+        #   - vagrant destroy -f
+        #   - vagrant up
+        #   - vagrant ssh
+        #   - "#sudo insights-client --payload ~/rhel7-content_profile_common.xml --content-type application/vnd.redhat.compliance.something+tgz"
