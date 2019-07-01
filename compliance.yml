@@ -47,7 +47,7 @@ windows:
         #   - cd ..
         #   - cd insights-chrome
         #   - git pull --rebase upstream master
-        #   - npm install
+        #   - npm ci
         #   - npm link ../insights-frontend-components
         #   - npm run start
         - compliance-frontend:
@@ -55,13 +55,13 @@ windows:
           - git stash
           - git pull --rebase upstream master
           - git stash pop
-          - npm install
+          - npm ci
           - npm link ../frontend-components
           - npm run start
         - frontend-components:
           - cd frontend-components
           - git pull --rebase upstream master
-          - npm install
+          - npm ci
           - npm run build
   - insights-upload:
       layout: even-vertical
