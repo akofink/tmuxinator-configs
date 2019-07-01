@@ -1,0 +1,10 @@
+# ~/.tmuxinator/winnie.yml
+
+name: winnie
+root: ~/dev/repos/winnie
+
+windows:
+  - git:
+  - vim: vim
+  - winnie:
+    - podman run -itv $PWD:/app:z --name winnie --pod winnie ruby bash
