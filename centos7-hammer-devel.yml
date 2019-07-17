@@ -5,6 +5,9 @@ on_project_start:
   - vagrant up centos7-hammer-devel
   # - sshfs -o idmap=user vagrant@centos7-hammer-devel.virbr1.akofink-laptop:/home/vagrant ~/dev/sshfs/centos7-hammer-devel
 
+on_project_stop:
+  - vagrant halt centos7-hammer-devel
+
 windows:
   - shell:
     - cd ~/dev/mux/centos7-hammer-devel
